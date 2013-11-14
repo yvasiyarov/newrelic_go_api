@@ -12,26 +12,33 @@ package newrelic_collector_client
 import "C"
 
 import (
-    "unsafe"
-    "runtime"
+	"runtime"
+	"unsafe"
 )
 
 const LANGUAGE = "go"
 
 func Init(license string, appName string) int {
-    cLicense := C.CString(license)
-    defer C.free(unsafe.Pointer(cLicense))
+	cLicense := C.CString(license)
+	defer C.free(unsafe.Pointer(cLicense))
 
-    cAppName := C.CString(appName)
-    defer C.free(unsafe.Pointer(cAppName))
+	cAppName := C.CString(appName)
+	defer C.free(unsafe.Pointer(cAppName))
 
-    cLanguage := C.CString(LANGUAGE)
-    defer C.free(unsafe.Pointer(cLanguage))
-    
-    cLanguageVersion := C.CString(runtime.Version())
-    defer C.free(unsafe.Pointer(cLanguageVersion))
+	cLanguage := C.CString(LANGUAGE)
+	defer C.free(unsafe.Pointer(cLanguage))
 
-    result := C.nr_init(cLicense, cAppName, cLanguage, cLanguageVersion)
+	cLanguageVersion := C.CString(runtime.Version())
+	defer C.free(unsafe.Pointer(cLanguageVersion))
 
-    return int(result)
+	result := C.nr_init(cLicense, cAppName, cLanguage, cLanguageVersion)
+	return int(result)
+}
+
+func RequestShutdown(reason string) int {
+	cReason := C.CString(reason)
+	defer C.free(unsafe.Pointer(cReason))
+
+	result := C.nr_request_shutdown(cReason)
+	return int(result)
 }
