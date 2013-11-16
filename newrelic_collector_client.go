@@ -1,4 +1,4 @@
-package newrelic_collector_client
+package newrelic_go_api
 
 /*
 #cgo CFLAGS: -fopenmp -I./_include
@@ -45,14 +45,15 @@ func RequestShutdown(reason string) int {
 	return int(result)
 }
 
-var ShutdownCallback = func(){}
+var ShutdownCallback = func() {}
+
 func RegisterShutdownCallback(callback TShutdownCallback) {
-    C.nr_register_shutdown_callback(C.shutdown_callback(unsafe.Pointer(&ShutdownCallback)))
+	C.nr_register_shutdown_callback(C.shutdown_callback(unsafe.Pointer(&ShutdownCallback)))
 }
 
 func DefaultWebTransactionHandler(name string, duration float64) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 
-    C.nr_default_web_transaction_handler(cName, C.double(duration))
+	C.nr_default_web_transaction_handler(cName, C.double(duration))
 }

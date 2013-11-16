@@ -1,8 +1,8 @@
-package newrelic_collector_client
+package newrelic_go_api
 
 import (
+	"fmt"
 	"testing"
-    "fmt"
 )
 
 const (
@@ -17,19 +17,20 @@ func TestInit(t *testing.T) {
 }
 
 func TestDefaultWebTransactionHandler(t *testing.T) {
-    DefaultWebTransactionHandler("test default transaction", 0.23)
+	DefaultWebTransactionHandler("test default transaction", 0.23)
 }
 
 var shutdownFlag = false
-func TestRegisterShutdownCallback(t *testing.T) {
-	RegisterShutdownCallback(func(){shutdownFlag = true; fmt.Printf("Shutdown callback called!\n")})
 
-    if result := RequestShutdown("shutdown reason 1"); result != 0 {
+func TestRegisterShutdownCallback(t *testing.T) {
+	RegisterShutdownCallback(func() { shutdownFlag = true; fmt.Printf("Shutdown callback called!\n") })
+
+	if result := RequestShutdown("shutdown reason 1"); result != 0 {
 		t.Errorf("Shutdown test failed. Return: %d.", result)
 	}
-    if shutdownFlag == false {
-        t.Errorf("Shutdown test failed. Callback was not called")
-    }
+	if shutdownFlag == false {
+		t.Errorf("Shutdown test failed. Callback was not called")
+	}
 }
 
 func TestRequestShutdown(t *testing.T) {
