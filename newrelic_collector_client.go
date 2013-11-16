@@ -18,6 +18,8 @@ import (
 
 const LANGUAGE = "go"
 
+type TShutdownCallback func()
+
 func Init(license string, appName string) int {
 	cLicense := C.CString(license)
 	defer C.free(unsafe.Pointer(cLicense))
@@ -42,3 +44,9 @@ func RequestShutdown(reason string) int {
 	result := C.nr_request_shutdown(cReason)
 	return int(result)
 }
+
+var ShutdownCallback = func(){}
+func RegisterShutdownCallback(callback TShutdownCallback) {
+    C.nr_register_shutdown_callback(C.shutdown_callback(unsafe.Pointer(&ShutdownCallback)))
+}
+
