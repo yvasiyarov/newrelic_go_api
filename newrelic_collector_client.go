@@ -50,3 +50,9 @@ func RegisterShutdownCallback(callback TShutdownCallback) {
     C.nr_register_shutdown_callback(C.shutdown_callback(unsafe.Pointer(&ShutdownCallback)))
 }
 
+func DefaultWebTransactionHandler(name string, duration float64) {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+
+    C.nr_default_web_transaction_handler(cName, C.double(duration))
+}

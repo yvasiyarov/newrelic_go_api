@@ -15,11 +15,15 @@ func TestInit(t *testing.T) {
 	}
 }
 
+func TestDefaultWebTransactionHandler(t *testing.T) {
+    DefaultWebTransactionHandler("test default transaction", 0.23)
+}
+
 var shutdownFlag = false
 func TestRegisterShutdownCallback(t *testing.T) {
 	RegisterShutdownCallback(func(){shutdownFlag = true})
 
-    if result := RequestShutdown("shutdown reason"); result != 0 {
+    if result := RequestShutdown("shutdown reason 1"); result != 0 {
 		t.Errorf("Shutdown test failed. Return: %d.", result)
 	}
     if shutdownFlag == false {
@@ -28,7 +32,7 @@ func TestRegisterShutdownCallback(t *testing.T) {
 }
 
 func TestRequestShutdown(t *testing.T) {
-	if result := RequestShutdown("shutdown reason"); result != 0 {
+	if result := RequestShutdown("shutdown reason2"); result != 0 {
 		t.Errorf("Shutdown test failed. Return: %d.", result)
 	}
 }
