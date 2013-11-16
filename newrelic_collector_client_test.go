@@ -2,6 +2,7 @@ package newrelic_collector_client
 
 import (
 	"testing"
+    "fmt"
 )
 
 const (
@@ -21,7 +22,7 @@ func TestDefaultWebTransactionHandler(t *testing.T) {
 
 var shutdownFlag = false
 func TestRegisterShutdownCallback(t *testing.T) {
-	RegisterShutdownCallback(func(){shutdownFlag = true})
+	RegisterShutdownCallback(func(){shutdownFlag = true; fmt.Printf("Shutdown callback called!\n")})
 
     if result := RequestShutdown("shutdown reason 1"); result != 0 {
 		t.Errorf("Shutdown test failed. Return: %d.", result)
