@@ -25,7 +25,7 @@ var shutdownFlag = false
 func TestRegisterShutdownCallback(t *testing.T) {
 	RegisterShutdownCallback(func() { shutdownFlag = true; fmt.Printf("Shutdown callback called!\n") })
 
-	if result := RequestShutdown("shutdown reason 1"); result != 0 {
+    if result := RequestShutdown("Reason: callback test"); result != 0 {
 		t.Errorf("Shutdown test failed. Return: %d.", result)
 	}
 	if shutdownFlag == false {
@@ -34,7 +34,7 @@ func TestRegisterShutdownCallback(t *testing.T) {
 }
 
 func TestRequestShutdown(t *testing.T) {
-	if result := RequestShutdown("shutdown reason2"); result != 0 {
+    if result := RequestShutdown("Reason: test nr_request_shutdown() "); result != 0 {
 		t.Errorf("Shutdown test failed. Return: %d.", result)
 	}
 }
