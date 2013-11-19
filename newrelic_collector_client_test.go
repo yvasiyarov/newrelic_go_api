@@ -16,15 +16,17 @@ func TestInit(t *testing.T) {
 	}
 }
 
-func TestDefaultWebTransactionHandler(t *testing.T) {
-	DefaultWebTransactionHandler("test default transaction", 0.23)
+func TestRequestShutdown(t *testing.T) {
+    if result := RequestShutdown("Reason: test nr_request_shutdown() "); result != 0 {
+		t.Errorf("Shutdown test failed. Return: %d.", result)
+	}
 }
 
 var shutdownFlag = false
-
 func TestRegisterShutdownCallback(t *testing.T) {
 	RegisterShutdownCallback(func() { shutdownFlag = true; fmt.Printf("Shutdown callback called!\n") })
 
+	Init(NEWRELIC_LICENSE, TEST_APP_NAME)
     if result := RequestShutdown("Reason: callback test"); result != 0 {
 		t.Errorf("Shutdown test failed. Return: %d.", result)
 	}
@@ -33,8 +35,8 @@ func TestRegisterShutdownCallback(t *testing.T) {
 	}
 }
 
-func TestRequestShutdown(t *testing.T) {
-    if result := RequestShutdown("Reason: test nr_request_shutdown() "); result != 0 {
-		t.Errorf("Shutdown test failed. Return: %d.", result)
-	}
+func TestDefaultWebTransactionHandler(t *testing.T) {
+	DefaultWebTransactionHandler("test default transaction", 0.23)
 }
+
+
