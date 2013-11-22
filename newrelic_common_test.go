@@ -9,4 +9,3 @@ func TestSetupLogging(t *testing.T) {
 		t.Errorf("SetupLogging failed. Return %d transaction ID", result)
 	}
 }
-

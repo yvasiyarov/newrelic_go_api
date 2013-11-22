@@ -8,6 +8,11 @@ package newrelic_go_api
 
 #include <stdlib.h> 
 #include <newrelic_collector_client.h> 
+
+extern void shutdownCallbackCToGoProxy();
+static void shutdownCallbackCGOProxy() {
+    nr_register_shutdown_callback(shutdownCallbackCToGoProxy);
+}
 */
 import "C"
 
@@ -45,10 +50,16 @@ func RequestShutdown(reason string) int {
 	return int(result)
 }
 
-var ShutdownCallback = func() {}
+var shutdownCallback = func() {}
+
+//export shutdownCallbackCToGoProxy
+func shutdownCallbackCToGoProxy() {
+	shutdownCallback()
+}
 
 func RegisterShutdownCallback(callback TShutdownCallback) {
-	C.nr_register_shutdown_callback(C.shutdown_callback(unsafe.Pointer(&ShutdownCallback)))
+	shutdownCallback = callback
+	C.shutdownCallbackCGOProxy()
 }
 
 func DefaultWebTransactionHandler(name string, duration float64) {

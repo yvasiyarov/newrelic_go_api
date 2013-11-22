@@ -12,8 +12,9 @@ package newrelic_go_api
 import "C"
 
 import (
-    "unsafe"
+	"unsafe"
 )
+
 type TTransactionId int64
 
 const (
@@ -35,5 +36,3 @@ func NameWebTransaction(transactionId TTransactionId, name string) int {
 	result := C.nr_name_web_transaction(C.long(transactionId), cName)
 	return int(result)
 }
-
-
