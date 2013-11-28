@@ -47,6 +47,6 @@ func EndWebTransaction(transactionId TTransactionId) int {
 	return int(result)
 }
 
-func SetupEmbeddedCollectorClient(transactionId TTransactionId) {
+func SetupEmbeddedCollectorClient() {
 	C.setupEmbededCollectorCGOProxy()
 }
