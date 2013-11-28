@@ -8,6 +8,11 @@ package newrelic_go_api
 
 #include <stdlib.h> 
 #include <newrelic_transaction.h> 
+#include <newrelic_collector_client.h> 
+static void setupEmbededCollectorCGOProxy() {
+    nr_setup_embedded_collector_client(nr_default_web_transaction_handler);
+}
+
 */
 import "C"
 
@@ -35,4 +40,13 @@ func NameWebTransaction(transactionId TTransactionId, name string) int {
 
 	result := C.nr_name_web_transaction(C.long(transactionId), cName)
 	return int(result)
+}
+
+func EndWebTransaction(transactionId TTransactionId) int {
+	result := C.nr_end_web_transaction(C.long(transactionId))
+	return int(result)
+}
+
+func SetupEmbeddedCollectorClient(transactionId TTransactionId) {
+	C.setupEmbededCollectorCGOProxy()
 }

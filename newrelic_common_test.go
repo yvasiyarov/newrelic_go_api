@@ -1,5 +1,6 @@
 package newrelic_go_api
 
+/*
 import (
 	"testing"
 )
@@ -9,3 +10,4 @@ func TestSetupLogging(t *testing.T) {
 		t.Errorf("SetupLogging failed. Return %d transaction ID", result)
 	}
 }
+*/
