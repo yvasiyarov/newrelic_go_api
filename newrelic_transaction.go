@@ -53,6 +53,29 @@ func EndWebTransaction(transactionId TTransactionId) int {
 	return int(result)
 }
 
+func StartDatastoreStatement(table string, operation string) TTransactionId {
+	if operation != NR_DATASTORE_OPERATION_SELECT &&
+		operation != NR_DATASTORE_OPERATION_INSERT &&
+		operation != NR_DATASTORE_OPERATION_UPDATE &&
+		operation != NR_DATASTORE_OPERATION_DELETE {
+		return TTransactionId(0)
+	}
+
+	cTable := C.CString(table)
+	defer C.free(unsafe.Pointer(cTable))
+
+	cOperation := C.CString(operation)
+	defer C.free(unsafe.Pointer(cOperation))
+
+	result := C.nr_start_datastore_statement(cTable, cOperation)
+	return TTransactionId(result)
+}
+
+func EndDatastoreStatement(transactionId TTransactionId) int {
+	result := C.nr_end_datastore_statement(C.long(transactionId))
+	return int(result)
+}
+
 /// Only call once and after nr_init
 func SetupEmbeddedCollectorClient() {
 	C.setupEmbededCollectorCGOProxy()

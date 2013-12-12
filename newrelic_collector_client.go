@@ -21,7 +21,14 @@ import (
 	"unsafe"
 )
 
-const LANGUAGE = "go"
+const (
+	LANGUAGE = "go"
+
+	NR_STATUS_CODE_SHUTDOWN = 0
+	NR_STATUS_CODE_STARTING = 1
+	NR_STATUS_CODE_STOPPING = 2
+	NR_STATUS_CODE_STARTED  = 3
+)
 
 type TShutdownCallback func(int)
 

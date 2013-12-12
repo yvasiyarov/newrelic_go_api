@@ -4,6 +4,7 @@ package newrelic_go_api
 import (
 	"testing"
 	"time"
+    "log"
 )
 */
 const (
@@ -30,9 +31,10 @@ var shutdownFlag = false
 
 func FTestCallback(status int) {
 	shutdownFlag = true
+    log.Printf("Receive status callback, %d\n", status)
 }
 func TestRegisterShutdownCallback(t *testing.T) {
-	RegisterShutdownCallback(FTestCallback)
+	RegisterStatusCallback(FTestCallback)
 
 	Init(NEWRELIC_LICENSE, TEST_APP_NAME)
 	time.Sleep(10 * time.Second)
