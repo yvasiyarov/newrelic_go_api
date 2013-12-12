@@ -23,10 +23,16 @@ import (
 type TTransactionId int64
 
 const (
-	NR_ERROR_CODE_TRANSACTION_OK          = 0
-	NR_ERROR_CODE_TRANSACTION_NOT_STARTED = 1001
-	NR_ERROR_CODE_TRANSACTION_NOT_NAMED   = 1002
-	NR_ERROR_CODE_TRANSACTION_INVALID_ID  = 1003
+	NR_ERROR_CODE_OK                      = 0
+	NR_ERROR_CODE_INVALID_ID              = 1
+	NR_ERROR_CODE_TRANSACTION_NOT_STARTED = 2
+	NR_ERROR_CODE_TRANSACTION_IN_PROGRESS = 3
+	NR_ERROR_CODE_TRANSACTION_NOT_NAMED   = 4
+
+	NR_DATASTORE_OPERATION_SELECT = "select"
+	NR_DATASTORE_OPERATION_INSERT = "insert"
+	NR_DATASTORE_OPERATION_UPDATE = "update"
+	NR_DATASTORE_OPERATION_DELETE = "delete"
 )
 
 func StartWebTransaction() TTransactionId {
@@ -47,6 +53,7 @@ func EndWebTransaction(transactionId TTransactionId) int {
 	return int(result)
 }
 
+/// Only call once and after nr_init
 func SetupEmbeddedCollectorClient() {
 	C.setupEmbededCollectorCGOProxy()
 }

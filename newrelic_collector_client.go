@@ -9,9 +9,9 @@ package newrelic_go_api
 #include <stdlib.h> 
 #include <newrelic_collector_client.h> 
 
-extern void shutdownCallbackCToGoProxy();
-static void shutdownCallbackCGOProxy() {
-    nr_register_shutdown_callback(shutdownCallbackCToGoProxy);
+extern void statusCallbackCToGoProxy(int status);
+static void statusCallbackCGOProxy() {
+    nr_register_status_callback(statusCallbackCToGoProxy);
 }
 */
 import "C"
@@ -23,7 +23,7 @@ import (
 
 const LANGUAGE = "go"
 
-type TShutdownCallback func()
+type TShutdownCallback func(int)
 
 func Init(license string, appName string) int {
 	cLicense := C.CString(license)
@@ -50,21 +50,21 @@ func RequestShutdown(reason string) int {
 	return int(result)
 }
 
-var shutdownCallback = func() {}
+var statusCallback = func(status int) {}
 
-//export shutdownCallbackCToGoProxy
-func shutdownCallbackCToGoProxy() {
-	shutdownCallback()
+//export statusCallbackCToGoProxy
+func statusCallbackCToGoProxy(status C.int) {
+	statusCallback(int(status))
 }
 
-func RegisterShutdownCallback(callback TShutdownCallback) {
-	shutdownCallback = callback
-	C.shutdownCallbackCGOProxy()
+func RegisterStatusCallback(callback TShutdownCallback) {
+	statusCallback = callback
+	C.statusCallbackCGOProxy()
 }
 
-func DefaultWebTransactionHandler(name string, duration float64) {
-	cName := C.CString(name)
-	defer C.free(unsafe.Pointer(cName))
+func DefaultWebTransactionHandler(metricTableJson string) {
+	cMetricTableJson := C.CString(metricTableJson)
+	defer C.free(unsafe.Pointer(cMetricTableJson))
 
-	C.nr_default_web_transaction_handler(cName, C.double(duration))
+	C.nr_default_web_transaction_handler(cMetricTableJson)
 }

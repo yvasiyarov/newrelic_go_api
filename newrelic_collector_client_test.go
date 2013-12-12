@@ -28,7 +28,7 @@ func TestRequestShutdown(t *testing.T) {
 
 var shutdownFlag = false
 
-func FTestCallback() {
+func FTestCallback(status int) {
 	shutdownFlag = true
 }
 func TestRegisterShutdownCallback(t *testing.T) {

@@ -1,7 +1,3 @@
-/*
- * This is the C interface.
- */
-
 #ifndef NEWRELIC_COMMON_H_
 #define NEWRELIC_COMMON_H_
 
